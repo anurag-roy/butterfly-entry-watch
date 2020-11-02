@@ -9,11 +9,13 @@ import { blue } from "@ant-design/colors";
 const StockInputForm = ({ label, handleChange }) => {
   // TODO: Get all values from Local Storage
   const [names, setNames] = useState([]);
-  const [name, setName] = useState("NIFTY");
+  const [name, setName] = useState(localStorage.getItem(`stock${label}.name`) || "NIFTY");
   const [selected, setSelected] = useState(false);
   const [data, setData] = useState([]);
-  const [strikePrice, setStrikePrice] = useState("");
-  const [expiry, setExpiry] = useState("");
+  const [strikePrice, setStrikePrice] = useState(
+    localStorage.getItem(`stock${label}.strikePrice`) || "",
+  );
+  const [expiry, setExpiry] = useState(localStorage.getItem(`stock${label}.expiry`) || "");
 
   useEffect(() => {
     axios.get("http://localhost:3001/mapper/names").then((result) => {
@@ -24,8 +26,8 @@ const StockInputForm = ({ label, handleChange }) => {
   useEffect(() => {
     axios.get("http://localhost:3001/mapper/byName", { params: { name: name } }).then((result) => {
       setData(result.data);
-      setExpiry("");
-      setStrikePrice("");
+      // setExpiry("");
+      // setStrikePrice("");
     });
   }, [name]);
 
@@ -36,7 +38,10 @@ const StockInputForm = ({ label, handleChange }) => {
     if (x && y) {
       setSelected(true);
       handleChange({
-        name: `${name}${expiry}${strikePrice}`,
+        name,
+        strikePrice,
+        expiry,
+        displayName: `${name}${expiry}${strikePrice}`,
         ceToken: x.instrument_token,
         peToken: y.instrument_token,
       });
@@ -81,6 +86,7 @@ const StockInputForm = ({ label, handleChange }) => {
           showSearch
           style={{ width: 200 }}
           placeholder="Select Name"
+          value={name}
           options={names.map((n) => {
             return { label: n, value: n };
           })}
@@ -95,6 +101,7 @@ const StockInputForm = ({ label, handleChange }) => {
           showSearch
           style={{ width: 200 }}
           placeholder="Select Strike Price"
+          value={strikePrice}
           options={mapToStrikePrice(data).map((d) => {
             return { label: d, value: d };
           })}
@@ -109,6 +116,7 @@ const StockInputForm = ({ label, handleChange }) => {
           showSearch
           style={{ width: 150 }}
           placeholder="Select Expiry"
+          value={expiry}
           options={mapToExpiry(data, name, strikePrice).map((d) => {
             return { label: d, value: d };
           })}

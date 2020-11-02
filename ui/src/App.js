@@ -9,7 +9,7 @@ const App = () => {
   const { Title } = Typography;
 
   return (
-    <div style={{ backgroundColor: blue[0], height: "100vh" }}>
+    <div style={{ backgroundColor: blue[0], height: "100%" }}>
       <Title style={{ textAlign: "center", paddingTop: "1em" }}>Butterfly Entry Watch</Title>
       <InputForm />
     </div>

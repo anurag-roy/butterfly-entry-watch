@@ -14,14 +14,25 @@ const InputForm = () => {
   const [stockC, setStockC] = useState();
 
   const proceedButton = () => {
-    // if (!stockA || !stockB || !stockC) {
-    //   message.error(
-    //     "One or more invalid stocks selected. Please select valid stocks and try again.",
-    //   );
-    // } else {
-    //   setState("stocksSelected");
-    // }
-    setState("stocksSelected");
+    if (!stockA || !stockB || !stockC) {
+      message.error(
+        "One or more invalid stocks selected. Please select valid stocks and try again.",
+      );
+    } else {
+      localStorage.setItem("stockA.name", stockA.name);
+      localStorage.setItem("stockA.strikePrice", stockA.strikePrice);
+      localStorage.setItem("stockA.expiry", stockA.expiry);
+
+      localStorage.setItem("stockB.name", stockB.name);
+      localStorage.setItem("stockB.strikePrice", stockB.strikePrice);
+      localStorage.setItem("stockB.expiry", stockB.expiry);
+
+      localStorage.setItem("stockC.name", stockC.name);
+      localStorage.setItem("stockC.strikePrice", stockC.strikePrice);
+      localStorage.setItem("stockC.expiry", stockC.expiry);
+
+      setState("stocksSelected");
+    }
   };
 
   if (state === "selectingStocks") {

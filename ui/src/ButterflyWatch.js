@@ -6,7 +6,7 @@ import "./ButterflyWatch.css";
 
 const ENDPOINT = "http://127.0.0.1:3001";
 
-const WatchCards = ({ groupNumber, stocks, instrumentType, transactionTypes, value }) => {
+const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes, value }) => {
   const nameStyle = {
     width: "50%",
     textAlign: "center",
@@ -20,6 +20,7 @@ const WatchCards = ({ groupNumber, stocks, instrumentType, transactionTypes, val
   const valueStyle = {
     width: "100%",
     textAlign: "center",
+    fontSize: "3em",
   };
 
   return (
@@ -29,7 +30,7 @@ const WatchCards = ({ groupNumber, stocks, instrumentType, transactionTypes, val
       style={{ width: "30%", margin: "2rem" }}
     >
       <Card.Grid hoverable={false} style={nameStyle}>
-        {stocks.stockA.name}
+        {stockNames[0]}
       </Card.Grid>
       <Card.Grid hoverable={false} style={contentStyle}>
         {instrumentType}
@@ -38,7 +39,7 @@ const WatchCards = ({ groupNumber, stocks, instrumentType, transactionTypes, val
         {transactionTypes[0]}
       </Card.Grid>
       <Card.Grid hoverable={false} style={nameStyle}>
-        {stocks.stockB.name}
+        {stockNames[1]}
       </Card.Grid>
       <Card.Grid hoverable={false} style={contentStyle}>
         {instrumentType}
@@ -47,7 +48,7 @@ const WatchCards = ({ groupNumber, stocks, instrumentType, transactionTypes, val
         {transactionTypes[1]}
       </Card.Grid>
       <Card.Grid hoverable={false} style={nameStyle}>
-        {stocks.stockC.name}
+        {stockNames[2]}
       </Card.Grid>
       <Card.Grid hoverable={false} style={contentStyle}>
         {instrumentType}
@@ -63,7 +64,7 @@ const WatchCards = ({ groupNumber, stocks, instrumentType, transactionTypes, val
 };
 
 export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
-  const stockNames = [stockA.name, stockB.name, stockC.name];
+  const stockNames = [stockA.displayName, stockB.displayName, stockC.displayName];
 
   const [groupOneValue, setGroupOneValue] = useState(0);
   const [groupTwoValue, setGroupTwoValue] = useState(0);
@@ -103,28 +104,28 @@ export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
     <div className="card_container">
       <WatchCards
         groupNumber="1"
-        stocks={stockNames}
+        stockNames={stockNames}
         instrumentType="CE"
         transactionTypes={["SELL", "BUY", "SELL"]}
         value={groupOneValue}
       />
       <WatchCards
         groupNumber="2"
-        stocks={stockNames}
+        stockNames={stockNames}
         instrumentType="CE"
         transactionTypes={["BUY", "SELL", "BUY"]}
         value={groupTwoValue}
       />
       <WatchCards
         groupNumber="3"
-        stocks={stockNames}
+        stockNames={stockNames}
         instrumentType="PE"
         transactionTypes={["SELL", "BUY", "SELL"]}
         value={groupThreeValue}
       />
       <WatchCards
         groupNumber="4"
-        stocks={stockNames}
+        stockNames={stockNames}
         instrumentType="PE"
         transactionTypes={["BUY", "SELL", "BUY"]}
         value={groupFourValue}
