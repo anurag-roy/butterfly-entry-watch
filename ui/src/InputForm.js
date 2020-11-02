@@ -1,34 +1,30 @@
 import React, { useState } from "react";
 import { Button, Divider, message } from "antd";
 import StockInputForm from "./StockInputForm";
-import SelectedStock from "./SelectedStock";
-import axios from "axios";
 
 import "./InputForm.css";
 import "./StockInputForm.css";
+import { ButterflyWatch } from "./ButterflyWatch";
 
 const InputForm = () => {
-  const [state, setState] = useState("initial");
+  const [state, setState] = useState("selectingStocks");
 
   const [stockA, setStockA] = useState();
   const [stockB, setStockB] = useState();
   const [stockC, setStockC] = useState();
 
   const proceedButton = () => {
-    if (!stockA || !stockB || !stockC) {
-      message.error(
-        "One or more invalid stocks selected. Please select valid stocks and try again.",
-      );
-    } else {
-      axios
-        .post("http://localhost:3001/callButterflyEntry", { stockA, stockB, stockC })
-        .then((data) => console.log(data))
-        .catch((error) => console.error(error));
-      setState("done");
-    }
+    // if (!stockA || !stockB || !stockC) {
+    //   message.error(
+    //     "One or more invalid stocks selected. Please select valid stocks and try again.",
+    //   );
+    // } else {
+    //   setState("stocksSelected");
+    // }
+    setState("stocksSelected");
   };
 
-  if (state === "initial") {
+  if (state === "selectingStocks") {
     return (
       <>
         <div className="form_container">
@@ -41,17 +37,6 @@ const InputForm = () => {
           <Divider />
         </div>
         <div className="input_container">
-          <div className="input_element">
-            <SelectedStock input={"A"} data={stockA} />
-          </div>
-          <div className="input_element">
-            <SelectedStock input={"B"} data={stockB} />
-          </div>
-          <div className="input_element">
-            <SelectedStock input={"C"} data={stockC} />
-          </div>
-        </div>
-        <div className="input_container">
           <Button type="primary" size="large" onClick={proceedButton}>
             WATCH
           </Button>
@@ -59,7 +44,7 @@ const InputForm = () => {
       </>
     );
   } else {
-    return <div>Program started. Please check the console.</div>;
+    return <ButterflyWatch stockA={stockA} stockB={stockB} stockC={stockC} />;
   }
 };
 

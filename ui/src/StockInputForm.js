@@ -31,13 +31,14 @@ const StockInputForm = ({ label, handleChange }) => {
 
   useEffect(() => {
     setSelected(false);
-    // TODO: Handle instrument type i.e. both CE & PE
     const x = data.find((d) => d.tradingsymbol === `${name}${expiry}${strikePrice}CE`);
-    if (x) {
+    const y = data.find((d) => d.tradingsymbol === `${name}${expiry}${strikePrice}PE`);
+    if (x && y) {
       setSelected(true);
       handleChange({
-        ...x,
-        product: "NRML",
+        name: `${name}${expiry}${strikePrice}`,
+        ceToken: x.instrument_token,
+        peToken: y.instrument_token,
       });
     }
   }, [data, name, expiry, strikePrice, handleChange]);
