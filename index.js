@@ -19,6 +19,13 @@ app.use(express.static(path.join(__dirname, "build")));
 
 app.use("/mapper", mapperRouter);
 
+let aCEToken = undefined;
+let aPEToken = undefined;
+let bCEToken = undefined;
+let bPEToken = undefined;
+let cCEToken = undefined;
+let cPEToken = undefined;
+
 io.on("connection", (socket) => {
   console.log("User connected");
 
@@ -27,8 +34,9 @@ io.on("connection", (socket) => {
     access_token: accessToken,
   });
 
-  ticker.on("connect", (aCEToken, aPEToken, bCEToken, bPEToken, cCEToken, cPEToken) => {
+  ticker.on("connect", () => {
     console.log("Ticker connected. Subscribing to stocks...");
+    console.log([aCEToken, aPEToken, bCEToken, bPEToken, cCEToken, cPEToken]);
     ticker.setMode(ticker.modeFull, [aCEToken, aPEToken, bCEToken, bPEToken, cCEToken, cPEToken]);
   });
 
@@ -37,13 +45,15 @@ io.on("connection", (socket) => {
   });
 
   socket.on("startButterflyWatch", (stockTokens) => {
+    console.log("Starting Butterfly Watch...");
+
     // Extract instruments tokens for each stock
-    const aCEToken = parseInt(stockTokens.stockACE);
-    const aPEToken = parseInt(stockTokens.stockAPE);
-    const bCEToken = parseInt(stockTokens.stockBCE);
-    const bPEToken = parseInt(stockTokens.stockBPE);
-    const cCEToken = parseInt(stockTokens.stockCCE);
-    const cPEToken = parseInt(stockTokens.stockCPE);
+    aCEToken = parseInt(stockTokens.stockACE);
+    aPEToken = parseInt(stockTokens.stockAPE);
+    bCEToken = parseInt(stockTokens.stockBCE);
+    bPEToken = parseInt(stockTokens.stockBPE);
+    cCEToken = parseInt(stockTokens.stockCCE);
+    cPEToken = parseInt(stockTokens.stockCPE);
 
     // Declare variables which will be updated on each tick
     // Initialize with value 0
@@ -69,8 +79,8 @@ io.on("connection", (socket) => {
     // groupFour = 0 - aPESellersBid + 2*bPEBuyersBid - cPESellersBid
 
     // let [groupOne, groupTwo, groupThree, groupFour] = Array(4).fill(0);
-
-    ticker.connect(aCEToken, aPEToken, bCEToken, bPEToken, cCEToken, cPEToken);
+    console.log([aCEToken, aPEToken, bCEToken, bPEToken, cCEToken, cPEToken]);
+    ticker.connect();
 
     socket.emit("groupOne", 0 + aCEBuyersBid - 2 * bCESellersBid + cCEBuyersBid);
     socket.emit("groupTwo", 0 - aCESellersBid + 2 * bCEBuyersBid - cCESellersBid);
@@ -78,6 +88,7 @@ io.on("connection", (socket) => {
     socket.emit("groupFour", 0 - aPESellersBid + 2 * bPEBuyersBid - cPESellersBid);
 
     ticker.on("ticks", (ticks) => {
+      console.log("Got ticks...");
       ticks.forEach((t) => {
         if (t.instrument_token == aCEToken) {
           if (t.depth) {
