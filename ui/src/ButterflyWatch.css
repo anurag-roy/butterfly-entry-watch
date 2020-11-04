@@ -5,3 +5,15 @@
   justify-content: space-evenly;
   align-items: center;
 }
+
+.neutralValue {
+  color: grey;
+}
+
+.positiveValue {
+  color: green;
+}
+
+.negativeValue {
+  color: red;
+}

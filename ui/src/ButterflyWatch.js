@@ -23,6 +23,19 @@ const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes,
     fontSize: "3em",
   };
 
+  const [max, setMax] = useState(value);
+  const [min, setMin] = useState(value);
+
+  useEffect(() => {
+    if (value > max) {
+      setMax(value);
+    }
+
+    if (value < min) {
+      setMin(value);
+    }
+  }, [value]);
+
   return (
     <Card
       title={`Group ${groupNumber}`}
@@ -56,8 +69,18 @@ const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes,
       <Card.Grid hoverable={false} style={contentStyle}>
         {transactionTypes[2]}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={valueStyle}>
-        {value}
+      <Card.Grid hoverable={false} style={nameStyle}>
+        Max: {parseFloat(max).toFixed(2)}
+      </Card.Grid>
+      <Card.Grid hoverable={false} style={nameStyle}>
+        Min: {parseFloat(min).toFixed(2)}
+      </Card.Grid>
+      <Card.Grid
+        hoverable={false}
+        style={valueStyle}
+        className={value == 0 ? "neutralValue" : value > 0 ? "positiveValue" : "negativeValue"}
+      >
+        {parseFloat(value).toFixed(2)}
       </Card.Grid>
     </Card>
   );

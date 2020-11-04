@@ -70,7 +70,7 @@ io.on("connection", (socket) => {
       cCESellersBid,
       cPEBuyersBid,
       cPESellersBid,
-    ] = Array(12).fill(0);
+    ] = Array(12).fill(undefined);
 
     // Group Calculations
     // groupOne = 0 + aCEBuyersBid - 2*bCESellersBid + cCEBuyersBid
@@ -79,16 +79,14 @@ io.on("connection", (socket) => {
     // groupFour = 0 - aPESellersBid + 2*bPEBuyersBid - cPESellersBid
 
     // let [groupOne, groupTwo, groupThree, groupFour] = Array(4).fill(0);
-    console.log([aCEToken, aPEToken, bCEToken, bPEToken, cCEToken, cPEToken]);
     ticker.connect();
 
-    socket.emit("groupOne", 0 + aCEBuyersBid - 2 * bCESellersBid + cCEBuyersBid);
-    socket.emit("groupTwo", 0 - aCESellersBid + 2 * bCEBuyersBid - cCESellersBid);
-    socket.emit("groupThree", 0 + aPEBuyersBid - 2 * bPESellersBid + cPEBuyersBid);
-    socket.emit("groupFour", 0 - aPESellersBid + 2 * bPEBuyersBid - cPESellersBid);
+    // socket.emit("groupOne", 0 + aCEBuyersBid - 2 * bCESellersBid + cCEBuyersBid);
+    // socket.emit("groupTwo", 0 - aCESellersBid + 2 * bCEBuyersBid - cCESellersBid);
+    // socket.emit("groupThree", 0 + aPEBuyersBid - 2 * bPESellersBid + cPEBuyersBid);
+    // socket.emit("groupFour", 0 - aPESellersBid + 2 * bPEBuyersBid - cPESellersBid);
 
     ticker.on("ticks", (ticks) => {
-      console.log("Got ticks...");
       ticks.forEach((t) => {
         if (t.instrument_token == aCEToken) {
           if (t.depth) {
