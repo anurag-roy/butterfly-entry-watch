@@ -13,8 +13,11 @@ kc.setAccessToken(accessToken);
 
 (async () => {
   try {
-    const instruments = await kc.getInstruments(["NFO"]);
-    fs.writeFileSync("instruments.json", JSON.stringify(instruments), (error) => {
+    const instruments = await kc.getInstruments();
+    const filteredInstruments = instruments.filter(
+      (i) => i.exchange === "NFO" || i.exchange === "MCX",
+    );
+    fs.writeFileSync("instruments.json", JSON.stringify(filteredInstruments), (error) => {
       if (error) console.log("Error while writing instruments", error);
     });
   } catch (error) {

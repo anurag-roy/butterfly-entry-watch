@@ -6,10 +6,9 @@ import { Card } from "antd";
 import "./ButterflyWatch.css";
 
 const { Title } = Typography;
-const { Meta } = Card;
 const ENDPOINT = "http://127.0.0.1:3001";
 
-const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes, value }) => {
+const WatchCards = ({ stockNames, instrumentType, transactionTypes, value }) => {
   const nameStyle = {
     width: "50%",
     textAlign: "center",
@@ -35,7 +34,7 @@ const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes,
             height="50px"
             width="50px"
             color="black"
-            style={{ "margin-right": "10rem" }}
+            style={{ marginRight: "10rem" }}
           />
         </>
       );
@@ -47,7 +46,7 @@ const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes,
             height="50px"
             width="50px"
             color="black"
-            style={{ "margin-right": "10rem" }}
+            style={{ marginRight: "10rem" }}
           />
         </>
       );
@@ -198,7 +197,6 @@ export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
     <>
       <div className="card_container">
         <WatchCards
-          groupNumber="1"
           stockNames={stockNames}
           instrumentType="CE"
           transactionTypes={["SELL", "BUY", "SELL"]}
@@ -206,7 +204,6 @@ export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
         />
         <Title>CE</Title>
         <WatchCards
-          groupNumber="2"
           stockNames={stockNames}
           instrumentType="CE"
           transactionTypes={["BUY", "SELL", "BUY"]}
@@ -215,7 +212,6 @@ export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
       </div>
       <div className="card_container">
         <WatchCards
-          groupNumber="3"
           stockNames={stockNames}
           instrumentType="PE"
           transactionTypes={["SELL", "BUY", "SELL"]}
@@ -223,7 +219,6 @@ export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
         />
         <Title>PE</Title>
         <WatchCards
-          groupNumber="4"
           stockNames={stockNames}
           instrumentType="PE"
           transactionTypes={["BUY", "SELL", "BUY"]}
