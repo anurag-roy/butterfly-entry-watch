@@ -26,25 +26,31 @@ const server = app.listen(8000, () => {
 app.use("/login", async (req, res) => {
   const requestToken = req.query.request_token;
 
-  // Generate and set the Access Token
-  console.log("Generating session. Please wait.");
-  const result = await kc.generateSession(requestToken, config.apiSecret);
-  accessToken = result.access_token;
-  kc.setAccessToken(accessToken);
-  console.log("Access Token set. ", accessToken);
+  try {
+    // Generate and set the Access Token
+    console.log("Generating session. Please wait.");
+    const result = await kc.generateSession(requestToken, config.apiSecret);
+    accessToken = result.access_token;
+    kc.setAccessToken(accessToken);
+    console.log("Access Token set. ", accessToken);
 
-  // Populate .env file
-  const contents = `API_KEY="${config.apiKey}"\nAPI_SECRET="${config.apiSecret}"\nACCESS_TOKEN="${accessToken}"`;
-  fs.writeFileSync(".env", contents, (error) => {
-    if (error) console.log("Error while writing access token", error);
-  });
+    // Populate .env file
+    const contents = `API_KEY="${config.apiKey}"\nAPI_SECRET="${config.apiSecret}"\nACCESS_TOKEN="${accessToken}"`;
+    fs.writeFileSync(".env", contents, (error) => {
+      if (error) console.log("Error while writing access token", error);
+    });
 
-  // Populate list of instruments
-  const instruments = await kc.getInstruments(["NFO"]);
-  fs.writeFileSync("instruments.json", JSON.stringify(instruments), (error) => {
-    if (error) console.log("Error while writing instruments", error);
-  });
+    // Populate list of instruments
+    const instruments = await kc.getInstruments();
+    fs.writeFileSync("instruments.json", JSON.stringify(instruments), (error) => {
+      if (error) console.log("Error while writing instruments", error);
+    });
 
-  res.send("Login flow successful!");
+    res.send("Login flow successful!");
+  } catch (error) {
+    console.log("Error: ", error);
+    res.send("Some error occurred. Please try again.");
+  }
+
   server.close();
 });

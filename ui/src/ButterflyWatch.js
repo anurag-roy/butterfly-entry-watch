@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
+import { Typography } from "antd";
 import { Card } from "antd";
 
 import "./ButterflyWatch.css";
 
+const { Title } = Typography;
+const { Meta } = Card;
 const ENDPOINT = "http://127.0.0.1:3001";
 
 const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes, value }) => {
@@ -23,6 +26,34 @@ const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes,
     fontSize: "3em",
   };
 
+  const Image = () => {
+    if (transactionTypes[0] === "SELL") {
+      return (
+        <>
+          <img
+            src="/SBS.svg"
+            height="50px"
+            width="50px"
+            color="black"
+            style={{ "margin-right": "10rem" }}
+          />
+        </>
+      );
+    } else if (transactionTypes[0] === "BUY") {
+      return (
+        <>
+          <img
+            src="/BSB.svg"
+            height="50px"
+            width="50px"
+            color="black"
+            style={{ "margin-right": "10rem" }}
+          />
+        </>
+      );
+    }
+  };
+
   const [max, setMax] = useState(value);
   const [min, setMin] = useState(value);
 
@@ -38,35 +69,75 @@ const WatchCards = ({ groupNumber, stockNames, instrumentType, transactionTypes,
 
   return (
     <Card
-      title={`Group ${groupNumber}`}
-      extra={<a href="#">Order</a>}
-      style={{ width: "30%", margin: "2rem" }}
+      extra={
+        <>
+          <Image />
+          <a href="#">Order</a>
+        </>
+      }
+      style={{ width: "30%", margin: "2rem 4rem" }}
     >
-      <Card.Grid hoverable={false} style={nameStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={nameStyle}
+        className={transactionTypes[0] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {stockNames[0]}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={contentStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={contentStyle}
+        className={transactionTypes[0] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {instrumentType}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={contentStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={contentStyle}
+        className={transactionTypes[0] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {transactionTypes[0]}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={nameStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={nameStyle}
+        className={transactionTypes[1] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {stockNames[1]}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={contentStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={contentStyle}
+        className={transactionTypes[1] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {instrumentType}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={contentStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={contentStyle}
+        className={transactionTypes[1] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {transactionTypes[1]}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={nameStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={nameStyle}
+        className={transactionTypes[2] == "SELL" ? "negativeValue" : "normalValue"}
+      >
         {stockNames[2]}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={contentStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={contentStyle}
+        className={transactionTypes[2] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {instrumentType}
       </Card.Grid>
-      <Card.Grid hoverable={false} style={contentStyle}>
+      <Card.Grid
+        hoverable={false}
+        style={contentStyle}
+        className={transactionTypes[2] === "SELL" ? "negativeValue" : "normalValue"}
+      >
         {transactionTypes[2]}
       </Card.Grid>
       <Card.Grid hoverable={false} style={nameStyle}>
@@ -124,35 +195,41 @@ export const ButterflyWatch = ({ stockA, stockB, stockC }) => {
   }, []);
 
   return (
-    <div className="card_container">
-      <WatchCards
-        groupNumber="1"
-        stockNames={stockNames}
-        instrumentType="CE"
-        transactionTypes={["SELL", "BUY", "SELL"]}
-        value={groupOneValue}
-      />
-      <WatchCards
-        groupNumber="2"
-        stockNames={stockNames}
-        instrumentType="CE"
-        transactionTypes={["BUY", "SELL", "BUY"]}
-        value={groupTwoValue}
-      />
-      <WatchCards
-        groupNumber="3"
-        stockNames={stockNames}
-        instrumentType="PE"
-        transactionTypes={["SELL", "BUY", "SELL"]}
-        value={groupThreeValue}
-      />
-      <WatchCards
-        groupNumber="4"
-        stockNames={stockNames}
-        instrumentType="PE"
-        transactionTypes={["BUY", "SELL", "BUY"]}
-        value={groupFourValue}
-      />
-    </div>
+    <>
+      <div className="card_container">
+        <WatchCards
+          groupNumber="1"
+          stockNames={stockNames}
+          instrumentType="CE"
+          transactionTypes={["SELL", "BUY", "SELL"]}
+          value={groupOneValue}
+        />
+        <Title>CE</Title>
+        <WatchCards
+          groupNumber="2"
+          stockNames={stockNames}
+          instrumentType="CE"
+          transactionTypes={["BUY", "SELL", "BUY"]}
+          value={groupTwoValue}
+        />
+      </div>
+      <div className="card_container">
+        <WatchCards
+          groupNumber="3"
+          stockNames={stockNames}
+          instrumentType="PE"
+          transactionTypes={["SELL", "BUY", "SELL"]}
+          value={groupThreeValue}
+        />
+        <Title>PE</Title>
+        <WatchCards
+          groupNumber="4"
+          stockNames={stockNames}
+          instrumentType="PE"
+          transactionTypes={["BUY", "SELL", "BUY"]}
+          value={groupFourValue}
+        />
+      </div>
+    </>
   );
 };
